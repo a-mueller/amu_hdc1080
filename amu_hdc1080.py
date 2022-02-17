@@ -154,21 +154,21 @@ class HDC1080:
     def temperature(self):
         if self.mode == READ_BOTH_VALUES:
             raise RuntimeError("Wrong mode, use temperature_and_humidity if mode == READ_BOTH_VALUES")
-        # Read the temperature register (big endian signed short)
-        value = self._read_from_register(_REG_TEMP, '>h')
+        # Read the temperature register (big endian unsigned short)
+        value = self._read_from_register(_REG_TEMP, '>H')
         return _convert_to_celsius(value)
 
     @property
     def humidity(self):
         if self.mode == READ_BOTH_VALUES:
             raise RuntimeError("Wrong mode, use temperature_and_humidity if mode == READ_BOTH_VALUES")
-        # Read the humidity register (big endian signed short)
-        value = self._read_from_register(_REG_HUMI, '>h')
+        # Read the humidity register (big endian unsigned short)
+        value = self._read_from_register(_REG_HUMI, '>H')
         return _convert_to_relative_humidity(value)
 
     def temperature_and_humidity(self):
         if self.mode == READ_SINGLE_VALUE:
             raise RuntimeError("Wrong mode, use temperature or humidity if mode == READ_SINGLE_VALUE")
-        # Read the humidity register (big endian signed short)
-        values = self._read_from_registers(_REG_TEMP, struct_format='>h')
+        # Read the humidity register (big endian unsigned short)
+        values = self._read_from_registers(_REG_TEMP, struct_format='>H')
         return _convert_to_celsius(values[0]), _convert_to_relative_humidity(values[1])
